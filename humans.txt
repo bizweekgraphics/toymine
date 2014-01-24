@@ -1,0 +1,18 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Toph Tucker @tophtucker
+    Allison McCann @atmccann
+
+# THANKS
+
+    Jim Aley, editor
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3, Normalize.css, jQuery, Modernizr
+    d3.js -- http://d3js.org
+    Coindesk Bitcoin Price Index API -- http://coindesk.com/price
+    Crypto-JS -- http://crypto-js.googlecode.com

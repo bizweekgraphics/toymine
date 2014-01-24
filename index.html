@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        
+        <script src="js/vendor/sha256.js"></script>
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    
+    <body>
+    
+        
+        <div id="sidebar">
+        <ol>
+			<li>Miners work on validating <span id="highlight-block" class="highlight">“blocks”</span> of recent transactions. Blocks are pages in the <a href="https://blockchain.info/" target="new">global ledger book</a> tracking all transactions.</li>
+			<li>To make it hard for fraudsters to submit false verifications, Bitcoin makes it hard for everyone: to finish a block, you must complete a puzzle. Miners pick an arbitrary number, called a <span id="highlight-nonce" class="highlight">“nonce”</span>.</li>
+			<li>When the transactions and the nonce are put through a certain unpredictable, irreversible function, it spits out another number, called a <span id="highlight-hash" class="highlight">“hash”</span>, like 0a8ce26f.</li>
+			<li>The first small-enough hash wins the block, and its 25 Bitcoin ($<span id="btc25">21,000</span>) reward. The block is added to the <span id="highlight-blockchain" class="highlight">“blockchain”</span>, the official record of every Bitcoin transaction ever. (The first-ever Bitcoins were mined in <a href="https://blockchain.info/block-index/1" target="new">the genesis block</a>.)</li>
+        </ol>
+        </div>
+        
+        <svg class="diagram" width="970" height="600">
+        
+			<defs>
+			
+				<!-- drop shadow for buttons etc -->
+				<filter id="dropshadow" height="130%">
+					<feGaussianBlur in="SourceAlpha" stdDeviation="3"/> 
+					<feOffset dx="1" dy="1" result="offsetblur"/> 
+					<feMerge> 
+						<feMergeNode/>
+						<feMergeNode in="SourceGraphic"/> 
+					</feMerge>
+				</filter>
+				
+				<!-- arrowhead for annotations -->
+				<marker id = "arrowhead" viewBox = "-10 -10 20 20" refX = "0" refY = "0" markerWidth = "20" markerHeight = "20" stroke-width = "1" orient = "auto">
+					<polyline stroke-linejoin="bevel" points="-6.72,-6.749 0.54,0 -6.72,6.749 "/>
+				</marker>
+				
+			</defs>
+        
+			<!-- BLOCKCHAIN -->
+			<g id="blockchain-wrapper">
+			
+				<!-- Start with the genesis block -->
+				<text id="blockchainLabel" class="h1" x="0" y="20">Blockchain</text>
+				
+				<g id="blockchain">
+					<g class="block" id="genesisblock" transform="translate(0,30)">
+						<polygon stroke-miterlimit="10" points="113,0 0,0 0,78.5 113,78.5 113,44.125 122.812,34.375 
+							132.625,44.125 132.625,0 "/>
+						<text x="55" y="25">The</text>
+						<text x="55" y="40">Genesis</text>
+						<text x="55" y="55">Block</text>
+					</g>
+				</g>
+			
+			</g>
+		
+			<!-- ACTIVE BLOCK-->
+			<g id="block-wrapper" transform="translate(30,200)">
+			
+				<text id="blockLabel" class="h1" x="-30" y="-40">Current block</text>
+				
+				<polygon class="block-frame" points="120.334,0 7.334,0 7.334,41.104 3.667,37.417 0,41.104 
+		0,78.5 7.334,78.5 120.334,78.5 120.334,41.104 124.001,37.458 127.668,41.104 127.668,0 " transform="scale(5) translate(-5 -5)"/>
+			
+				<!-- TRANSACTIONS -->
+				<g id="transactions-wrapper" transform="translate(45,30)">
+					<text id="transactionsLabel" class="h2" x="0" y="-10">Transactions</text>
+					<text id="transactionsHeader" class="h3" x="0" y="30">Sender* → Amount → Recipient*</text>
+					<text id="transactionsFootnote" class="h4" x="0" y="310">(*actually anonymous)</text>
+					<text class="h2" x="180" y="-10">+</text>
+					<g id="transactions"></g>
+				</g>
+								
+				<!-- HASHER -->
+				<g id="hasher-wrapper" transform="translate(360,50)">
+								
+					<text class="h2" x="0" y="-30" style="text-anchor: middle;">Nonce</text>
+					<text class="h2" x="65" y="-30" style="text-anchor: middle;">→</text>
+					<text class="h2" x="150" y="-30" style="text-anchor: middle;">Hash</text>
+				</g>
+				
+				<!-- Instructions chevron -->
+				<g id="instructions" class="chevron vertical" transform="translate(120 -80)">
+					<path stroke-linejoin="bevel" d="M37.398,19.583
+						c0,0,0,1.891-1.443,3.113l-15.488,13.11c0,0-1.443,1.223-2.887,0L2.091,22.696c0,0-1.443-1.223-1.443-3.113V2.541
+						c0,0,0-1.891,1.891-1.891h32.968c0,0,1.891,0,1.891,1.891V19.583z" transform="scale(2)"/>
+					
+					<!-- translate(120 -80) -->
+					<g id="step1">
+						<text x="38" y="35">CHECKING</text>
+					</g>
+				
+					<!-- translate(320 -80) -->
+					<g id="step2" display="none">
+						<text x="38" y="17">CLICK</text>
+						<text x="38" y="30">BELOW</text>
+						<text x="38" y="43">TO</text>
+						<text x="38" y="56">MINE</text>
+					</g>
+				
+					<!-- translate(470 -80) -->
+					<g id="step3" display="none">
+						<text x="38" y="35">MINED!</text>
+					</g>
+				</g>
+
+			</g>
+			
+			<!-- BIZWEEKARROWS -->
+			<g id="bizweekarrows">
+				<path id="arrow-blocks" d="M 720 50 a 145 145 0 0 0 -90 120" marker-end="url(#arrowhead)" opacity="0"></path>
+				<path id="arrow-nonce" d="M 740 250 a 360 360 0 0 1 -340 50" marker-end="url(#arrowhead)" opacity="0"></path>
+				<path id="arrow-hash" d="M 860 370 a 390 390 0 0 0 -315 -85" marker-end="url(#arrowhead)" opacity="0"></path>
+				<path id="arrow-blockchain" d="M 820 470 a 490 490 0 0 1 -760 -360" marker-end="url(#arrowhead)" opacity="0"></path>
+			</g>
+			
+			<!-- WALLET (earnings) -->
+			<g id="wallet" transform="translate(600,20)">
+				<circle cx="0" cy="45" r="60"/>
+				<text y="5"></text>
+				<text y="15" style="font-weight:bold;">Earnings</text>
+				<text y="50" id="bitcoins-earned">Ⓑ0</text>
+				<text y="75" id="usd-earned">$0</text>
+			</g>
+			
+			<!-- Goin' Cookie Clicker -->
+			<g id="buy" transform="translate(600,110)" display="none">
+				<rect x="-65" width="130" height="30" filter="url(#dropshadow)"/>
+				<text y="19">BUY AUTO-MINER</text>
+			</g>
+			
+			<g id="asic" transform="translate(575 100) scale(0.5)" opacity="0">
+				<path d="M93.212,0H6.787C3.038,0,0,3.038,0,6.787v86.425C0,96.961,3.038,100,6.787,100h86.425c3.749,0,6.788-3.039,6.788-6.788   V6.787C100,3.038,96.961,0,93.212,0z M76.664,36.789l7.025-7.023c0.331-0.332,0.781-0.519,1.251-0.519h3.212   c0.629-1.16,1.857-1.949,3.271-1.949c2.053,0,3.717,1.665,3.717,3.718c0,2.053-1.664,3.718-3.717,3.718   c-1.413,0-2.643-0.788-3.271-1.949h-2.479l-7.023,7.024c-0.332,0.332-0.782,0.519-1.251,0.519h-2.973v7.934h2.238l7.025-7.023   c0.331-0.332,0.781-0.519,1.251-0.519h3.211c0.629-1.16,1.858-1.949,3.271-1.949c2.053,0,3.717,1.665,3.717,3.719   c0,2.053-1.664,3.717-3.717,3.717c-1.413,0-2.642-0.788-3.271-1.949h-2.479l-7.023,7.024c-0.332,0.332-0.782,0.518-1.251,0.518   h-2.973v7.935h2.238l7.025-7.023c0.331-0.332,0.781-0.52,1.251-0.52h3.211c0.629-1.159,1.858-1.948,3.271-1.948   c2.053,0,3.717,1.664,3.717,3.719c0,2.053-1.664,3.717-3.717,3.717c-1.413,0-2.642-0.787-3.271-1.947h-2.479l-7.023,7.023   c-0.332,0.332-0.782,0.518-1.251,0.518h-2.973v7.935h2.238l7.025-7.024c0.331-0.332,0.781-0.518,1.251-0.518h3.211   c0.629-1.161,1.858-1.948,3.271-1.948c2.053,0,3.717,1.664,3.717,3.717c0,2.055-1.664,3.719-3.717,3.719   c-1.413,0-2.642-0.789-3.271-1.948h-2.479l-7.023,7.023c-0.332,0.332-0.782,0.518-1.251,0.518h-4.334v2.629l7.023,7.024   c0.332,0.331,0.519,0.781,0.519,1.25v3.192c1.183,0.622,1.991,1.862,1.991,3.291c0,2.054-1.664,3.718-3.719,3.718   c-2.053,0-3.717-1.664-3.717-3.718c0-1.396,0.769-2.609,1.906-3.245v-2.504l-7.023-7.025c-0.332-0.331-0.52-0.781-0.52-1.25v-3.682   h-7.892v2.948l7.024,7.024c0.332,0.331,0.519,0.781,0.519,1.25v3.213c1.159,0.629,1.948,1.858,1.948,3.271   c0,2.054-1.664,3.718-3.719,3.718c-2.053,0-3.717-1.664-3.717-3.718c0-1.412,0.787-2.642,1.948-3.271v-2.478l-7.024-7.025   c-0.332-0.331-0.518-0.781-0.518-1.25v-3.682h-7.934v2.948l7.023,7.024c0.332,0.331,0.519,0.781,0.519,1.25v3.213   c1.16,0.629,1.947,1.858,1.947,3.271c0,2.054-1.664,3.718-3.717,3.718c-2.054,0-3.718-1.664-3.718-3.718   c0-1.412,0.788-2.642,1.949-3.271v-2.479l-7.025-7.025c-0.332-0.331-0.519-0.781-0.519-1.25v-3.682h-7.933v2.948l7.023,7.024   c0.332,0.331,0.518,0.781,0.518,1.25v3.212c1.161,0.63,1.949,1.859,1.949,3.271c0,2.054-1.665,3.718-3.718,3.718   s-3.719-1.664-3.719-3.718c0-1.412,0.789-2.642,1.949-3.271v-2.478l-7.024-7.025c-0.33-0.331-0.518-0.781-0.518-1.25v-3.682h-7.934   v2.948l7.023,7.024c0.331,0.331,0.518,0.781,0.518,1.25v3.212c1.161,0.63,1.95,1.859,1.95,3.271c0,2.054-1.666,3.718-3.719,3.718   s-3.719-1.664-3.719-3.718c0-1.412,0.789-2.642,1.949-3.271v-2.478l-7.023-7.025c-0.331-0.331-0.518-0.781-0.518-1.25v-3.524   h-1.938l-7.023,7.024c-0.332,0.332-0.782,0.519-1.251,0.519h-3.191c-0.623,1.183-1.861,1.991-3.292,1.991   c-2.053,0-3.718-1.665-3.718-3.718c0-2.054,1.665-3.719,3.718-3.719c1.396,0,2.609,0.77,3.245,1.906h2.505l7.024-7.023   c0.332-0.332,0.781-0.519,1.251-0.519h4.564v-7.892h-3.832l-7.023,7.023c-0.332,0.332-0.782,0.519-1.251,0.519h-3.212   c-0.629,1.16-1.858,1.949-3.271,1.949c-2.053,0-3.718-1.665-3.718-3.719c0-2.053,1.665-3.718,3.718-3.718   c1.414,0,2.643,0.788,3.271,1.949h2.479l7.024-7.024c0.332-0.331,0.781-0.518,1.251-0.518h4.564v-7.935h-3.832l-7.023,7.023   c-0.332,0.332-0.782,0.519-1.251,0.519h-3.212c-0.629,1.16-1.857,1.949-3.271,1.949c-2.053,0-3.718-1.666-3.718-3.719   s1.665-3.719,3.718-3.719c1.413,0,2.643,0.789,3.271,1.95h2.479l7.024-7.024c0.332-0.331,0.781-0.518,1.251-0.518h4.564v-7.934   h-3.832l-7.023,7.023c-0.332,0.332-0.782,0.519-1.251,0.519h-3.212c-0.629,1.16-1.857,1.949-3.271,1.949   c-2.053,0-3.718-1.666-3.718-3.718c0-2.053,1.665-3.719,3.718-3.719c1.413,0,2.643,0.789,3.271,1.95h2.479l7.024-7.025   c0.332-0.332,0.781-0.518,1.251-0.518h4.564v-7.934h-3.832l-7.023,7.024c-0.332,0.331-0.782,0.518-1.251,0.518h-3.212   c-0.629,1.161-1.857,1.95-3.271,1.95c-2.053,0-3.718-1.666-3.718-3.719c0-2.053,1.665-3.718,3.718-3.718   c1.413,0,2.643,0.789,3.271,1.949h2.479l7.024-7.022c0.332-0.332,0.781-0.519,1.251-0.519h4.333v-2.629l-7.023-7.023   c-0.332-0.332-0.518-0.783-0.518-1.252v-3.191c-1.184-0.622-1.991-1.861-1.991-3.291c0-2.053,1.664-3.718,3.718-3.718   s3.717,1.665,3.717,3.718c0,1.395-0.77,2.609-1.905,3.245v2.504l7.023,7.024c0.331,0.332,0.518,0.782,0.518,1.251v3.738h7.892   v-3.004l-7.023-7.023c-0.331-0.332-0.518-0.783-0.518-1.252v-3.21c-1.161-0.629-1.948-1.859-1.948-3.271   c0-2.053,1.664-3.718,3.717-3.718c2.054,0,3.719,1.665,3.719,3.718c0,1.413-0.789,2.641-1.948,3.271v2.478l7.023,7.024   c0.332,0.332,0.518,0.782,0.518,1.251v3.738h7.934v-3.004l-7.023-7.023c-0.331-0.332-0.518-0.783-0.518-1.252v-3.21   c-1.161-0.629-1.95-1.859-1.95-3.271c0-2.053,1.666-3.718,3.719-3.718s3.719,1.665,3.719,3.718c0,1.413-0.789,2.641-1.949,3.271   v2.478l7.024,7.024c0.332,0.332,0.518,0.782,0.518,1.251v3.738h7.935v-3.004l-7.023-7.023c-0.332-0.332-0.519-0.783-0.519-1.252   v-3.21c-1.161-0.629-1.949-1.859-1.949-3.271c0-2.053,1.665-3.718,3.718-3.718c2.054,0,3.719,1.665,3.719,3.718   c0,1.413-0.789,2.641-1.949,3.271v2.478l7.023,7.024c0.332,0.332,0.519,0.782,0.519,1.251v3.738h7.935v-3.004l-7.023-7.023   c-0.332-0.332-0.519-0.783-0.519-1.252v-3.21c-1.161-0.629-1.949-1.859-1.949-3.271c0-2.053,1.664-3.718,3.719-3.718   c2.053,0,3.717,1.665,3.717,3.718c0,1.413-0.787,2.641-1.948,3.271v2.478l7.023,7.024c0.332,0.332,0.519,0.782,0.519,1.251v3.524   h1.936l7.025-7.024c0.331-0.332,0.781-0.519,1.251-0.519h3.191c0.621-1.183,1.86-1.991,3.291-1.991   c2.053,0,3.717,1.665,3.717,3.719c0,2.053-1.664,3.717-3.717,3.717c-1.396,0-2.61-0.77-3.246-1.906h-2.504l-7.023,7.023   c-0.332,0.332-0.782,0.519-1.251,0.519h-2.973v7.892H76.664z"/>
+				<rect x="33.52" y="33.52" width="32.959" height="32.958"/>
+			</g>
+
+        
+        </svg>
+        
+		<div id="footer">
+			<ul>
+				<li>Blocks mined: <span id="stat-mined">0</span></li>
+				<li>Hash success probability: <span id="stat-probability">12.5%</span></li>
+				<li id="stat-miners-item" class="hidden">Miners bought: <span id="stat-miners">0</span></li>
+			<ul>
+        </div>
+        
+        <div id="data-line">
+			<p class="info">Graphic by Bloomberg Businessweek. Price data powered by <a href="http://coindesk.com/price" target="new">Coindesk</a></p>
+		</div>
+        
+		<script src="js/vendor/d3.min.js"></script>		
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+		
+		<script>
+				
+		var blockchain = new Array();
+		blockchain.push(new block());
+		
+		var svgCanvas = d3.select(".diagram");
+		var blockchainWrapper = d3.select("#blockchain-wrapper");
+		var blockchainMargin = {top: 0, right: 0, bottom: 0, left: 0};
+		blockchainWrapper.attr("transform", "translate("+blockchainMargin.left+","+blockchainMargin.top+")");
+		
+		var blockWrapper = d3.select("#block-wrapper");
+		var blockMargin = {top: 200, right: 0, bottom: 0, left: 30};
+		blockWrapper.attr("transform", "translate("+blockMargin.left+","+blockMargin.top+")");
+	
+		// CONSTANTS FOR DRAWING
+		var tickWidth = 20;
+		var textMargin = 10;
+		var textHeight = 10;
+		var lineHeight = 20;		
+		var nonceHeight = 290;
+		var nonceHitboxWidth = 50;
+		var hashHeight = nonceHeight*.75;
+		var functionWidth = nonceHeight/2;
+		
+		// SIMULATION PARAMETERS
+		var targetProportion = 2/16;
+		var fraudProportion = .3;
+		var transMean = 0;
+		var transSD = 0.2;
+		
+		// CACHE RULES EVERYTHING AROUND ME
+		var wallet = 0;
+		var reward = 25;
+		var USDrate = 856;
+		var USDrate = getPrice(); //fetch bitcoin price from Coindesk Bitcoin Price Index API
+		var minerPrice = 150;
+		var minerPriceInflationRate = 1.1;
+		
+		// MODES
+		var step = 1;
+		var miningToggle = false;
+		var mouseHashToggle = false;
+		var mineRate = 1;
+		
+		// ANNOTATION ARROWS ON HOVER
+		d3.select("#highlight-block").on("mouseover", function() { d3.select("#arrow-blocks").attr("opacity",1); });
+		d3.select("#highlight-block").on("mouseout", function() { d3.select("#arrow-blocks").attr("opacity",0); });
+		d3.select("#highlight-nonce").on("mouseover", function() { d3.select("#arrow-nonce").attr("opacity",1); });
+		d3.select("#highlight-nonce").on("mouseout", function() { d3.select("#arrow-nonce").attr("opacity",0); });
+		d3.select("#highlight-hash").on("mouseover", function() { d3.select("#arrow-hash").attr("opacity",1); });
+		d3.select("#highlight-hash").on("mouseout", function() { d3.select("#arrow-hash").attr("opacity",0); });
+		d3.select("#highlight-blockchain").on("mouseover", function() { d3.select("#arrow-blockchain").attr("opacity",1); });
+		d3.select("#highlight-blockchain").on("mouseout", function() { d3.select("#arrow-blockchain").attr("opacity",0); });
+		
+		// SCALES NONCE LINE TO HASH LINE
+		var hashScale = d3.scale.linear()
+			.domain([0,parseInt("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",16)])
+			.range([0,hashHeight]);
+		
+		// potential length of hashmap (pythagoras is my homeboy)
+		var totalLength = Math.sqrt(Math.pow(functionWidth,2)+Math.pow(nonceHeight,2));
+				
+		// draw list of transactions
+		var transactionsWrapper = d3.select("#transactions-wrapper");
+		var transactionsMargin = {top: 30, right: 30, bottom: 30, left: 45};
+		transactionsWrapper.attr("transform", "translate("+transactionsMargin.left+","+transactionsMargin.top+")");
+		drawTransactions(d3.select("#transactions"),0,lineHeight*2+textMargin,13);
+		
+		// grab "hasher" for right side, where the action is
+		var hasherWrapper = d3.select("#hasher-wrapper");
+		var hasherMargin = {top: 50, right: 30, bottom: 30, left: 360};
+		hasherWrapper.attr("transform", "translate("+hasherMargin.left+","+hasherMargin.top+")");
+		
+		// NONCE SIDE
+		hasherWrapper.append("text")
+			.attr("id", "nonceLabel")
+			.style("text-anchor", "end")
+			.attr("fill","#fff")
+			.attr("x", -(tickWidth+textMargin))
+			.attr("y", textHeight/2)
+			.text("0");
+		hasherWrapper.append("line")
+			.attr("id", "nonceTick")
+			.attr("x1", -tickWidth)
+			.attr("y1", 0)
+			.attr("x2", 0)
+			.attr("y2", 0);
+		hasherWrapper.append("line")
+			.attr("id", "nonce")
+			.classed("axis", true)
+			.attr("x1", 0)
+			.attr("y1", 0)
+			.attr("x2", 0)
+			.attr("y2", nonceHeight)
+		hasherWrapper.append("rect")
+			.attr("id", "nonceHitbox")
+			.attr("x", -nonceHitboxWidth/2)
+			.attr("y", 0)
+			.attr("width", nonceHitboxWidth)
+			.attr("height", nonceHeight)
+			.attr("cursor", "pointer")
+			.attr("opacity", "0");			
+		
+		// HASH SIDE
+		hasherWrapper.append("line")
+			.attr("id", "hash")
+			.classed("axis", true)
+			.attr("x1", functionWidth)
+			.attr("y1", 0)
+			.attr("x2", functionWidth)
+			.attr("y2", hashHeight);
+		hasherWrapper.append("line")
+			.attr("id", "hashTick")
+			.attr("x1", functionWidth)
+			.attr("y1", 0)
+			.attr("x2", functionWidth+tickWidth)
+			.attr("y2", 0)
+			.attr("opacity", 0);
+		hasherWrapper.append("text")
+			.attr("id", "hashLabel")
+			.attr("fill","#fff")
+			.attr("x", functionWidth+(tickWidth+textMargin))
+			.attr("y", textHeight/2)
+			.text("");
+		
+		// TARGET
+		hasherWrapper.append("line")
+			.attr("id", "target")
+			.classed("axis", true)
+			.classed("target", true)
+			.attr("x1", functionWidth)
+			.attr("y1", 0)
+			.attr("x2", functionWidth)
+			.attr("y2", hashHeight*targetProportion);
+		
+		// BIND EVENTS TO HITBOX
+		d3.select("#nonceHitbox")
+			.on("click", mouseclick)
+			.on("mouseover", mouseover)
+			.on("mousemove", mousemove)
+			.on("mouseout", mouseout);
+			
+		d3.select("#buy")
+			.on("click", buyMiner);
+		
+		function mouseover() {
+		}
+
+		function mousemove() {
+			
+			// only draw if we're currently mining
+			if(!miningToggle) return false;
+			
+			// move the nonce label to match the mouse
+			d3.select("#nonceLabel")
+				.attr("y",d3.mouse(this)[1]+textHeight/2)
+				.text(Math.round(d3.mouse(this)[1]+textHeight/2)-5); //5 is an inexplicable hand-tweak :-/
+			d3.select("#nonceTick")
+				.attr("y1",d3.mouse(this)[1])
+				.attr("y2",d3.mouse(this)[1]);
+			
+			// draw hash with the block, the nonce chosen by mouse position
+			// 'false' -> won't take action if successful
+			drawHash(block.transactions, d3.mouse(this)[1], false);
+		}
+
+		function mouseout() {
+		}
+		
+		function mouseclick() {
+			// draw/compute hash with block, nonce chosen by mouse position
+			// 'true' -> will take action if successful
+			drawHash(block.transactions, d3.mouse(this)[1], true);
+		}
+		
+		// DRAW AND COMPUTE HASH
+		function drawHash(data, nonce, execute) {
+			
+			// only draw if we're currently mining
+			if(!miningToggle) return false;
+			
+			// hash is a combination of data in the block and the arbitrary nonce
+			var mouseHash = new hash(data + nonce);
+			
+			// DRAW MAPPING
+			var hashmap = hasherWrapper.append("line")
+				.classed("hashmap", true)
+				.attr("x1", 0)
+				.attr("y1", nonce)
+				.attr("x2", functionWidth)
+				.attr("y2", mouseHash.outputScaled)
+				.attr("opacity", "0.2");
+			
+			// IF USER CLICKED TO HASH/MINE
+			// (regardless of whether they succeeded in mining)
+			if(execute) {
+				hashmap
+					.classed("executed", true)
+					.attr("opacity", ".8");
+			}
+			
+			// update hash label
+			d3.select("#hashLabel")
+				.attr("y",mouseHash.outputScaled+textHeight/2)
+				.text(mouseHash.outputHex.substr(0,8))
+				.attr("opacity",0)
+				.transition()
+					.delay(300/mineRate)
+					.duration(100/mineRate)
+					.attr("opacity",1);
+			d3.select("#hashTick")
+				.attr("y1",mouseHash.outputScaled)
+				.attr("y2",mouseHash.outputScaled)
+				.attr("opacity",0)
+				.transition()
+					.delay(300/mineRate)
+					.duration(100/mineRate)
+					.attr("opacity",1);
+			
+			// IF HASH IS SUCCESSFUL 
+			if(mouseHash.outputScaled < targetProportion*hashHeight) {
+				hashmap.classed("target",true);
+				d3.select("#hashTick").classed("target",true);
+				
+				// IF USER CLICKED
+				if(execute || mouseHashToggle) {
+				
+					// halt new mining & move instruction stepper
+					setStep(3);
+					
+					// signal success
+					d3.select(".block-frame").classed("success",true)
+					
+					// ADD TO BLOCKCHAIN DIAGRAM
+					var newBlock = d3.select("#blockchain").append("g")
+						.attr("transform","translate("+(1000+Math.abs(blockchain.length-4)*133)+",30)")
+						.classed("block",true);
+					newBlock.append("polygon")
+						.attr("fill","#000")
+						.attr("stroke","#0f0")
+						.attr("stroke-miterlimit",10)
+						.attr("points","132.625,0 19.625,0 19.625,44.125 9.812,34.375 0,44.125 0,78.5 19.625,"+
+							"78.5 132.625,78.5 132.625,44.125 142.438,34.375 152.25,44.125 152.25,0")
+					newBlock.append("text")
+						.attr("x",80)
+						.attr("y",40)
+						.attr("fill","#fff")
+						.text(mouseHash.outputHex.substr(0,8))
+					newBlock.transition()
+						.delay(500/mineRate)
+						.duration(1500/mineRate)
+						.attr("transform","translate("+(113+133*(blockchain.length-1))+",30)");
+					
+					//increment the height of the blockchain
+					blockchain[blockchain.length-1].mined = true;
+					blockchain[blockchain.length-1].nonce = nonce;
+					blockchain[blockchain.length-1].hash = mouseHash.outputHex;					
+					blockchain.push(new block());
+					
+					//increment mined stat
+					d3.select("#stat-mined").html(blockchain.length-1);
+
+					//move blockchain over to make room
+					//(a nicer solution would keep a sense of scale (of the length))
+					if(blockchain.length>4) {
+						d3.select("#blockchain")
+							.transition()
+								.delay(1500/mineRate)
+								.duration(500/mineRate)
+								.attr("transform","translate("+(-(blockchain.length-4)*133)+" 0)");
+					}
+					
+					//give reward (25 btc)
+					updateWallet(reward);
+					
+					//show the buy button if you have enough btc
+					if(wallet >= minerPrice) {
+						d3.select("#buy").attr("display","inline");
+					}
+					
+					// BLOCK SWOOPS OFFSCREEN...
+					blockWrapper
+						.transition()
+							.attr("transform", "translate(" + (blockMargin.left-1000) + "," + blockMargin.top + ")")
+							.delay(500/mineRate)
+							.duration(1500/mineRate)
+						
+						// WHEN BLOCK IS SAFELY OFFSCREEN...
+						.each('end', function() {
+						
+							// garbage collection
+							d3.selectAll(".hashmap").remove();
+							d3.selectAll("#transactions text").remove();
+							d3.selectAll("#hashLabel, #hashTick").attr("opacity",0);
+							d3.select(".block-frame").classed("success",false)
+														
+							// bring block back into view from the right
+							d3.select(this)
+								.attr("transform", "translate(" + (blockMargin.left+1000) + "," + blockMargin.top + ")")
+								.transition()
+									.attr("transform", "translate(" + blockMargin.left + "," + blockMargin.top + ")")
+									.duration(500/mineRate)
+									
+									// WHEN BLOCK IS BACK IN VIEW...
+									.each('end', function () {
+										// new transactions!
+										drawTransactions(d3.select("#transactions"),0,lineHeight*2+textMargin,13);
+										
+										// ready to validate
+										setStep(1);
+									});
+						});
+				} else {
+					// just resetting things
+					d3.select("#targetLock")
+						.attr("transform","translate(0,"+(mouseHash.outputScaled+textMargin/2)+")")
+						.attr("opacity",1);
+				}
+			} else {
+				// just resetting things
+				d3.select("#hashTick").classed("target",false);
+				d3.select("#targetLock").attr("opacity",0);
+			}
+			
+			// animate the line going across (the "hashmap")
+			hashmap
+				.attr("stroke-dasharray", totalLength + " " + totalLength)
+				.attr("stroke-dashoffset", totalLength)
+				.transition()
+					.duration(500/mineRate)
+					.ease("linear")
+					.attr("stroke-dashoffset", 0)
+				.transition()
+					.duration(10000/mineRate)
+					.ease("linear")
+					.attr("opacity", 0)
+					.remove();
+					
+		}
+		
+		</script>
+    </body>
+</html>
