@@ -317,8 +317,6 @@
           if(isTerminal) {
             d3.selectAll("a:not(.t-allow)").attr("href", null); // t-allow class for allowed links i.g. bloomberg.com links. 
             d3.selectAll(".t-remove").remove(); // t-remove class to delete elements i.g. Bloomberg Video embed
-
-            // d3.select(d3.select("#miner iframe").node().contentWindow.document).selectAll("a:not(.t-allow").attr("href", null);
           }
 
           function stripLinksIfTerminal(el) {
